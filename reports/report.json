@@ -1,0 +1,66 @@
+{
+  "report_type": "yaml_regression_report",
+  "old_file": "examples/github-actions/old.yml",
+  "new_file": "examples/github-actions/new.yml",
+  "overall_risk": "critical",
+  "block_pr": true,
+  "summary": {
+    "total_findings": 6,
+    "severity_counts": {
+      "critical": 3,
+      "high": 3,
+      "medium": 0,
+      "low": 0
+    }
+  },
+  "findings": [
+    {
+      "rule_id": "R001",
+      "severity": "high",
+      "category": "trigger-safety",
+      "path": "on.pull_request",
+      "message": "Pull request trigger was removed.",
+      "recommendation": "Restore the pull_request trigger so changes are validated before merging."
+    },
+    {
+      "rule_id": "R002",
+      "severity": "high",
+      "category": "test-coverage",
+      "path": "jobs.test.steps[2]",
+      "message": "A test step was removed.",
+      "recommendation": "Restore the removed test step or add an equivalent test command."
+    },
+    {
+      "rule_id": "R003",
+      "severity": "critical",
+      "category": "deployment-safety",
+      "path": "jobs.deploy.if",
+      "message": "Deployment condition was removed.",
+      "recommendation": "Restore the deployment condition, especially for production deployments."
+    },
+    {
+      "rule_id": "R004",
+      "severity": "critical",
+      "category": "security",
+      "path": "permissions.contents",
+      "message": "Workflow permission increased from read to write.",
+      "recommendation": "Use the least privilege required. Keep permission as read unless write access is necessary."
+    },
+    {
+      "rule_id": "R004",
+      "severity": "critical",
+      "category": "security",
+      "path": "permissions.actions",
+      "message": "New write permission was added.",
+      "recommendation": "Avoid adding write permissions unless they are explicitly required."
+    },
+    {
+      "rule_id": "R005",
+      "severity": "high",
+      "category": "branch-safety",
+      "path": "on.push.branches[0]",
+      "message": "Branch changed from main to develop.",
+      "recommendation": "Verify that changing the branch from main is intentional."
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+name: App CI
+
+on:
+  push:
+    branches:
+      - develop
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm install
+
+  deploy:
+    needs: test
+    environment: production
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy application
+        run: ./deploy.sh
