@@ -1,0 +1,45 @@
+name: YAML Regression Check
+
+on:
+  pull_request:
+    paths:
+      - "**/*.yml"
+      - "**/*.yaml"
+      - "src/**"
+      - "requirements.txt"
+  workflow_dispatch:
+
+jobs:
+  yaml-regression-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run YAML regression checker
+        run: |
+          python -m src.yaml_regression.cli \
+            --old-file examples/github-actions/old.yml \
+            --new-file examples/github-actions/new.yml \
+            --markdown-output reports/report.md \
+            --json-output reports/report.json
+
+      - name: Upload YAML regression reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: yaml-regression-reports
+          path: |
+            reports/report.md
+            reports/report.json
